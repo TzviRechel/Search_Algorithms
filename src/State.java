@@ -20,7 +20,6 @@ public class State {
         if(start.length() != 9){
             throw new IllegalArgumentException("Input must be 3x3");
         }
-
         int[] count = new int[3]; // array to count if there is exactly 2 for each color
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -64,12 +63,34 @@ public class State {
         this.move(op);
     }
 
+    /**
+     * move the color according the operator. assume that the operator is valid
+     * @param op the oprator that generate this state
+     */
     public void move(Operator op){
-
-
+        this._mat[op.get_source()[0]][op.get_source()[1]] = WHITE;
+        this._mat[op.get_dest()[0]][op.get_dest()[1]] = op.get_color();
     }
 
+    /**
+     *
+     * @param st
+     * @return
+     */
+    public boolean equale(State st){
+        return this._mat == st._mat;
+    }
 
+    public ArrayList<State> getChildren() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if(_mat[i][j] > 1){ //there is a gula there
+                    if(_mat[])
 
+            }
+
+        }
+        return children;
+    }
 }
 

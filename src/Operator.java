@@ -21,6 +21,14 @@ public class Operator {
         return this._color;
     }
 
+    public int[] get_dest() {
+        return _dest;
+    }
+
+    public int[] get_source() {
+        return _source;
+    }
+
     public int getCost(){
         return switch (get_color()) {
             case 2 -> 3;
