@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class State {
 
     final int WHITE = 0;
@@ -7,14 +9,16 @@ public class State {
     final int BLUE = 4;
 
     private int[][] _mat = new int[3][3];
+    private Operator operator = new Operator();
+    private ArrayList<State> children = new ArrayList<State>();
 
     /**
      * the constructor get a String represents the start state.
-     * @param String start
+     * @param start is
      */
     public State(String start){
-        if(init.length() < 9){
-            throw new IllegalArgumentException("Input must be 3x3.");
+        if(start.length() != 9){
+            throw new IllegalArgumentException("Input must be 3x3");
         }
 
         int[] count = new int[3]; // array to count if there is exactly 2 for each color
@@ -50,8 +54,21 @@ public class State {
         }
     }
 
+    /**
+     *
+     * @param parent
+     */
+    public State(State parent, Operator op){
+        this._mat = parent._mat;
+        this.operator = op;
+        this.move(op);
+    }
 
-    public void operator()
+    public void move(Operator op){
+
+
+    }
+
 
 
 }
