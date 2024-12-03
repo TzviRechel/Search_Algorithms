@@ -50,4 +50,9 @@ public class Operator {
         s += "(" + this._source[0] + "," + this._source[1] + ")" + ":" + color + ":" + "(" + this._dest[0] +"," + this._dest[1] + ")";
         return s;
     }
+
+
+    public boolean isInverse(Operator op){
+        return this._source == op._dest && this._dest == op._source && this._color != op._color;
+    }
 }

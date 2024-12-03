@@ -9,8 +9,8 @@ public class State {
     final int BLUE = 4;
 
     private int[][] _mat = new int[3][3];
-    private Operator operator = new Operator();
-    private ArrayList<State> children = new ArrayList<State>();
+    private Operator _operator = new Operator();
+    private ArrayList<State> _children = new ArrayList<State>();
 
     /**
      * the constructor get a String represents the start state.
@@ -57,15 +57,15 @@ public class State {
      *
      * @param parent
      */
-    public State(State parent, Operator op){
-        this._mat = parent._mat;
-        this.operator = op;
+    public State(int[][] mat, Operator op){
+        this._mat = mat;
+        this._operator = op;
         this.move(op);
     }
 
     /**
      * move the color according the operator. assume that the operator is valid
-     * @param op the oprator that generate this state
+     * @param op the operator that generate this state
      */
     public void move(Operator op){
         this._mat[op.get_source()[0]][op.get_source()[1]] = WHITE;
@@ -84,13 +84,57 @@ public class State {
     public ArrayList<State> getChildren() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if(_mat[i][j] > 1){ //there is a gula there
-                    if(_mat[])
+                if (_mat[i][j] > 1) {  //there is a gula there, check all neighbors
+                    int left = (j + 2) % 3;
+                    int right = (j + 1) % 3;
+                    int up = (i + 2) % 3;
+                    int down = (i + 1) % 3;
+                    // check left
+                    if (_mat[i][left] == WHITE) { //this cell is empty
+                        Operator curr = new Operator(i, j, i, left, _mat[i][j]); // create new operator
+                        if (!this._operator.isInverse(curr)) { // generate child iff is not inverse move
+                            State child = new State(this._mat, curr);
+                            this._children.add(child);
+                        }
+                    }
+                    // check right
+                    if (_mat[i][right] == WHITE) { //this cell is empty
+                        Operator curr = new Operator(i, j, i, right, _mat[i][j]); // create new operator
+                        if (!this._operator.isInverse(curr)) { // generate child iff is not inverse move
+                            State child = new State(this._mat, curr);
+                            this._children.add(child);
+                        }
+                    }
+                    // check up
+                    if (_mat[up][j] == WHITE) { //this cell is empty
+                        Operator curr = new Operator(i, j, up, j, _mat[i][j]); // create new operator
+                        if (!this._operator.isInverse(curr)) { // generate child iff is not inverse move
+                            State child = new State(this._mat, curr);
+                            this._children.add(child);
+                        }
+                    }
+                    // check down
+                    if (_mat[down][j] == WHITE) { //this cell is empty
+                        Operator curr = new Operator(i, j, up, down, _mat[i][j]); // create new operator
+                        if (!this._operator.isInverse(curr)) { // generate child iff is not inverse move
+                            State child = new State(this._mat, curr);
+                            this._children.add(child);
+                        }
+                    }
+                } //end if there gula
+            } // end for j
+        } //end for i
+        return this._children;
+    }
+}
 
-            }
-
+public void printState(){
+    for (int i = 0; i < 3; i++) {
+        System.out.println("[");
+        for (int j = 0; j < 3; j++) {
+            System.out.print(i + (j < 2 ? "," : "]"));
         }
-        return children;
+        System.out.println();
     }
 }
 
