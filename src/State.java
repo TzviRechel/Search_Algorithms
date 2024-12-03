@@ -9,8 +9,9 @@ public class State{
     final int BLUE = 4;
 
     private int[][] _mat = new int[3][3];
-    private Operator _operator = new Operator();
+    private Operator _operator = null;
     private ArrayList<State> _children = new ArrayList<State>();
+    private State _parent = null;
 
     /**
      * the constructor get a String represents the start state.
@@ -105,39 +106,51 @@ public class State{
                     // check left
                     if (_mat[i][left] == WHITE) { //this cell is empty
                         Operator curr = new Operator(i, j, i, left, _mat[i][j]); // create new operator
-                        if (!this._operator.isInverse(curr)) { // generate child iff is not inverse move
+                        if (this._operator == null || !this._operator.isInverse(curr)) { // generate child iff is not inverse move
                             State child = new State(this._mat, curr);
                             this._children.add(child);
+                            child._parent = this;
                         }
                     }
                     // check right
                     if (_mat[i][right] == WHITE) { //this cell is empty
                         Operator curr = new Operator(i, j, i, right, _mat[i][j]); // create new operator
-                        if (!this._operator.isInverse(curr)) { // generate child iff is not inverse move
+                        if (this._operator == null || !this._operator.isInverse(curr)) { // generate child iff is not inverse move
                             State child = new State(this._mat, curr);
                             this._children.add(child);
+                            child._parent = this;
                         }
                     }
                     // check up
                     if (_mat[up][j] == WHITE) { //this cell is empty
                         Operator curr = new Operator(i, j, up, j, _mat[i][j]); // create new operator
-                        if (!this._operator.isInverse(curr)) { // generate child iff is not inverse move
+                        if (this._operator == null || !this._operator.isInverse(curr)) { // generate child iff is not inverse move
                             State child = new State(this._mat, curr);
                             this._children.add(child);
+                            child._parent = this;
                         }
                     }
                     // check down
                     if (_mat[down][j] == WHITE) { //this cell is empty
                         Operator curr = new Operator(i, j, down, j, _mat[i][j]); // create new operator
-                        if (!this._operator.isInverse(curr)) { // generate child iff is not inverse move
+                        if (this._operator == null || !this._operator.isInverse(curr)) { // generate child iff is not inverse move
                             State child = new State(this._mat, curr);
                             this._children.add(child);
+                            child._parent = this;
                         }
                     }
                 } //end if there gula
             } // end for j
         } //end for i
         return this._children;
+    }
+
+    public Operator get_operator(){
+        return this._operator;
+    }
+
+    public State get_parent() {
+        return _parent;
     }
 
     public void printState(){

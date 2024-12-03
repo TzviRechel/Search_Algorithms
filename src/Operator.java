@@ -5,9 +5,6 @@ public class Operator {
     private int _color = 0;
 
 
-    public Operator(){
-    }
-
     public Operator(int x1, int y1, int x2, int y2, int color){
         if(color < 2 || color > 4){
             throw new IllegalArgumentException("color is not legal");
@@ -47,12 +44,13 @@ public class Operator {
             case 4 -> "B";
             default -> "";
         };
-        s += "(" + this._source[0] + "," + this._source[1] + ")" + ":" + color + ":" + "(" + this._dest[0] +"," + this._dest[1] + ")";
+        s += "(" + this._source[0]+1 + "," + this._source[1]+1 + ")" + ":" + color + ":" + "(" + this._dest[0]+1 +"," + this._dest[1]+1 + ")";
         return s;
     }
 
 
     public boolean isInverse(Operator op) {
+        if(op == null){return false;}
         return java.util.Arrays.equals(this._source, op._dest) &&
                 java.util.Arrays.equals(this._dest, op._source) &&
                 this._color == op._color;
