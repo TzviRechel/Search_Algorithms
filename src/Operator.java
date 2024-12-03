@@ -52,7 +52,10 @@ public class Operator {
     }
 
 
-    public boolean isInverse(Operator op){
-        return this._source == op._dest && this._dest == op._source && this._color != op._color;
+    public boolean isInverse(Operator op) {
+        return java.util.Arrays.equals(this._source, op._dest) &&
+                java.util.Arrays.equals(this._dest, op._source) &&
+                this._color == op._color;
     }
+
 }

@@ -60,7 +60,11 @@ public class State{
      * @param parent
      */
     public State(int[][] mat, Operator op){
-        this._mat = mat;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                this._mat[i][j] = mat[i][j];
+            }
+        }
         this._operator = op;
         this.move(op);
     }
@@ -80,7 +84,14 @@ public class State{
      * @return
      */
     public boolean equale(State st){
-        return this._mat == st._mat;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if(this._mat[i][j] != st._mat[i][j]){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public ArrayList<State> getChildren() {
