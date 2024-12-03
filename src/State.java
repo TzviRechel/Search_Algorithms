@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class State {
+public class State{
 
     final int WHITE = 0;
     final int BLACK = 1;
@@ -23,19 +23,19 @@ public class State {
         int[] count = new int[3]; // array to count if there is exactly 2 for each color
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                char cell = start.charAt(i);
+                char cell = start.charAt((i*3)+j);
                 switch (cell){
                     case 'R':
                         _mat[i][j] = RED;
-                        count[0] ++;
+                        count[0]++;
                         break;
                     case 'B':
                         _mat[i][j] = BLUE;
-                        count[1] ++;
+                        count[1]++;
                         break;
                     case 'G':
                         _mat[i][j] = GREEN;
-                        count[2] ++;
+                        count[2]++;
                         break;
                     case '_':
                         _mat[i][j] = WHITE;
@@ -43,6 +43,8 @@ public class State {
                     case 'X':
                         _mat[i][j] = BLACK;
                         break;
+                    default:
+                        throw new IllegalArgumentException("Invalid character in input string: " + cell);
                 }
             }
         }
@@ -115,7 +117,7 @@ public class State {
                     }
                     // check down
                     if (_mat[down][j] == WHITE) { //this cell is empty
-                        Operator curr = new Operator(i, j, up, down, _mat[i][j]); // create new operator
+                        Operator curr = new Operator(i, j, down, j, _mat[i][j]); // create new operator
                         if (!this._operator.isInverse(curr)) { // generate child iff is not inverse move
                             State child = new State(this._mat, curr);
                             this._children.add(child);
@@ -126,15 +128,25 @@ public class State {
         } //end for i
         return this._children;
     }
-}
 
-public void printState(){
-    for (int i = 0; i < 3; i++) {
-        System.out.println("[");
-        for (int j = 0; j < 3; j++) {
-            System.out.print(i + (j < 2 ? "," : "]"));
+    public void printState(){
+        for (int i = 0; i < 3; i++) {
+            System.out.print("[");
+            for (int j = 0; j < 3; j++) {
+                char c = switch (_mat[i][j]) {
+                    case RED -> 'R';
+                    case BLUE -> 'B';
+                    case GREEN -> 'G';
+                    case WHITE -> '_';
+                    case BLACK -> 'X';
+                    default -> '?'; // Should never happen
+                };
+                System.out.print(c + (j < 2 ? "," : "]"));
+            }
+            System.out.println();
         }
-        System.out.println();
     }
 }
+
+
 
