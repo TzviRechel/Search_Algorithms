@@ -7,14 +7,15 @@ public class Algorithms {
 
     public static void BFS(State start, State goal){
         Queue<State> Q = new LinkedList<>();
+        int generate = 1;
         State myGoal = null;
         Q.add(start);
         boolean out = false;
         while (!Q.isEmpty()){
            State curr = Q.poll();
-           ArrayList<State> children = curr.getChildren();
-           for(State child : children){
-               if(child.equale(goal)){
+           for(State child : curr){
+               generate++;
+               if(child.equals(goal)){
                    myGoal = child;
                    out = true;
                    break;
@@ -31,8 +32,12 @@ public class Algorithms {
             S.add(path.get_operator());
             path = path.get_parent();
         }
+        int cost = 0;
         while (!S.isEmpty()){
+            cost+=S.peek().getCost();
             System.out.print(S.pop().toString() + (S.isEmpty() ? "\n" : "--"));
         }
+        System.out.println("cost: " + cost);
+        System.out.println("num: " + generate);
     }
 }

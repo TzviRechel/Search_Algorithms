@@ -9,6 +9,11 @@ public class Ex1 {
 
         start.printState();
         goal.printState();
+        long startTime = System.nanoTime();
         Algorithms.BFS(start, goal);
+        long endTime = System.nanoTime();
+        double elapsedTime = (endTime - startTime) / 1_000_000_000.0;
+
+        System.out.println("Elapsed time: " + elapsedTime + " seconds");
         }
     }
