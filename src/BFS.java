@@ -1,30 +1,31 @@
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-public class Algorithms {
+public class BFS implements Searching{
 
-    public static void BFS(State start, State goal){
+
+    @Override
+    public void search(State start, State goal) {
         Queue<State> Q = new LinkedList<>();
         int generate = 1;
         State myGoal = null;
         Q.add(start);
         boolean out = false;
         while (!Q.isEmpty()){
-           State curr = Q.poll();
-           for(State child : curr){
-               generate++;
-               if(child.equals(goal)){
-                   myGoal = child;
-                   out = true;
-                   break;
-               }
-               Q.add(child);
-           }
-           if(out){
-               break;
-           }
+            State curr = Q.poll();
+            for(State child : curr){
+                generate++;
+                if(child.equals(goal)){
+                    myGoal = child;
+                    out = true;
+                    break;
+                }
+                Q.add(child);
+            }
+            if(out){
+                break;
+            }
         }
         State path = myGoal;
         Stack<Operator> S = new Stack<>();
@@ -39,5 +40,6 @@ public class Algorithms {
         }
         System.out.println("cost: " + cost);
         System.out.println("num: " + generate);
+
     }
 }
