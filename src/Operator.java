@@ -1,7 +1,7 @@
 public class Operator {
 
-    private int[] _source = new int[2]; //
-    private int[] _dest = new int[2];
+    private final int[] _source = new int[2]; //
+    private final int[] _dest = new int[2];
     private int _color = 0;
 
 

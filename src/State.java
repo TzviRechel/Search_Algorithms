@@ -2,94 +2,77 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * Represents a state in a 3x3 grid-based puzzle. Each cell can have a specific color or state.
+ * Provides functionality to generate new states by applying moves and to iterate over possible child states.
+ */
 public class State implements Iterable<State> {
 
-    final int WHITE = 0;
-    final int BLACK = 1;
-    final int GREEN = 2;
-    final int RED = 3;
-    final int BLUE = 4;
+    // Color constants
+    private static final int WHITE = 0;
+    private static final int BLACK = 1;
+    private static final int GREEN = 2;
+    private static final int RED = 3;
+    private static final int BLUE = 4;
 
-    private int[][] _mat = new int[3][3];
-    private Operator _operator = null;
-    //private ArrayList<State> _children = new ArrayList<State>();
-    private State _parent = null;
+    private final int[][] _mat = new int[3][3]; // 3x3 grid representing the state
+    private Operator _operator = null;    // The operator that generated this state
+    private State _parent = null;         // Parent state for backtracking
 
     /**
-     * the constructor get a String represents the start state.
+     * Constructor to initialize the state from a string representation.
      *
-     * @param start is
+     * @param start a string of length 9 representing the 3x3 grid.
+     *              Each character represents a cell:
+     *              'R' -> Red, 'B' -> Blue, 'G' -> Green, '_' -> White, 'X' -> Black.
+     * @throws IllegalArgumentException if the input is invalid.
      */
     public State(String start) {
         if (start.length() != 9) {
-            throw new IllegalArgumentException("Input must be 3x3");
+            throw new IllegalArgumentException("Input must represent a 3x3 grid (length 9).");
         }
-        int[] count = new int[3]; // array to count if there is exactly 2 for each color
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 char cell = start.charAt((i * 3) + j);
-                switch (cell) {
-                    case 'R':
-                        _mat[i][j] = RED;
-                        count[0]++;
-                        break;
-                    case 'B':
-                        _mat[i][j] = BLUE;
-                        count[1]++;
-                        break;
-                    case 'G':
-                        _mat[i][j] = GREEN;
-                        count[2]++;
-                        break;
-                    case '_':
-                        _mat[i][j] = WHITE;
-                        break;
-                    case 'X':
-                        _mat[i][j] = BLACK;
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Invalid character in input string: " + cell);
-                }
-            }
-        }
-        for (int i = 0; i < 3; i++) {
-            if (count[i] != 2) {
-                throw new IllegalArgumentException("there is no two for each color");
+                _mat[i][j] = mapCharToColor(cell);
             }
         }
     }
 
     /**
-     * @param parent
+     * Constructor to initialize a new state based on a matrix and an operator.
+     * Assumes the operator is valid.
+     *
+     * @param mat a 3x3 matrix representing the state.
+     * @param op  the operator that generated this state.
      */
     public State(int[][] mat, Operator op) {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                this._mat[i][j] = mat[i][j];
-            }
-        }
+        copyMatrix(mat, this._mat);
         this._operator = op;
         this.move(op);
     }
 
     /**
-     * move the color according the operator. assume that the operator is valid
+     * Moves a color from its source to destination based on the provided operator.
      *
-     * @param op the operator that generate this state
+     * @param op the operator defining the move.
      */
-    public void move(Operator op) {
+    private void move(Operator op) {
         this._mat[op.get_source()[0]][op.get_source()[1]] = WHITE;
         this._mat[op.get_dest()[0]][op.get_dest()[1]] = op.get_color();
     }
 
     /**
-     * @param st
-     * @return
+     * Checks if this state is equal to another state, according to the matrices.
+     *
+     * @param other the state to compare with.
+     * @return true if the states are identical, false otherwise.
      */
-    public boolean equals(State st) {
+    public boolean equals(State other) {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (this._mat[i][j] != st._mat[i][j]) {
+                if (this._mat[i][j] != other._mat[i][j]) {
                     return false;
                 }
             }
@@ -105,30 +88,85 @@ public class State implements Iterable<State> {
         return _parent;
     }
 
+    /**
+     * Creates a child state based on the current state and an operator.
+     *
+     * @param mat a 3x3 matrix representing the state.
+     * @param op  the operator defining the move.
+     * @return the newly created child state.
+     */
     private State generateChild(int[][] mat, Operator op) {
         State child = new State(mat, op);
         child._parent = this;
         return child;
     }
 
+    /**
+     * Prints the current state in a readable 3x3 grid format.
+     */
     public void printState() {
         for (int i = 0; i < 3; i++) {
             System.out.print("[");
             for (int j = 0; j < 3; j++) {
-                char c = switch (_mat[i][j]) {
-                    case RED -> 'R';
-                    case BLUE -> 'B';
-                    case GREEN -> 'G';
-                    case WHITE -> '_';
-                    case BLACK -> 'X';
-                    default -> '?'; // Should never happen
-                };
-                System.out.print(c + (j < 2 ? "," : "]"));
+                System.out.print(mapColorToChar(_mat[i][j]) + (j < 2 ? "," : "]"));
             }
             System.out.println();
         }
     }
 
+    // Private helper methods
+
+    /**
+     * Maps a character to its corresponding color.
+     * @param cell the character to map.
+     * @return the mapped color.
+     * @throws IllegalArgumentException if the character is invalid.
+     */
+    private int mapCharToColor(char cell) {
+        return switch (cell) {
+            case 'R' -> RED;
+            case 'B' -> BLUE;
+            case 'G' -> GREEN;
+            case '_' -> WHITE;
+            case 'X' -> BLACK;
+            default -> throw new IllegalArgumentException("Invalid character in input string: " + cell);
+        };
+    }
+
+    /**
+     * Maps a color to its corresponding character.
+     *
+     * @param color the color to map.
+     * @return the mapped character.
+     */
+    private char mapColorToChar(int color) {
+        return switch (color) {
+            case RED -> 'R';
+            case BLUE -> 'B';
+            case GREEN -> 'G';
+            case WHITE -> '_';
+            case BLACK -> 'X';
+            default -> '?'; // Should never happen
+        };
+    }
+
+    /**
+     * Copies a 3x3 matrix into another 3x3 matrix.
+     *
+     * @param src the source matrix.
+     * @param dest the destination matrix.
+     */
+    private void copyMatrix(int[][] src, int[][] dest) {
+        for (int i = 0; i < 3; i++) {
+            System.arraycopy(src[i], 0, dest[i], 0, 3);
+        }
+    }
+
+    /**
+     * Returns an iterator over all possible child states.
+     *
+     * @return an iterator for child states.
+     */
     @Override
     public Iterator<State> iterator() {
         return new Iterator<>() {
@@ -157,7 +195,7 @@ public class State implements Iterable<State> {
 
             private void findNext() {
                 while (i < 3) {
-                    if (_mat[i][j] > 1) { // There's a ball to move
+                    if (_mat[i][j] > 1) { // Check if there is a ball to move
                         while (direction < 4) {
                             int[] neighbor = getNeighbor(i, j, direction);
                             if (neighbor != null && _mat[neighbor[0]][neighbor[1]] == WHITE) {
@@ -195,15 +233,6 @@ public class State implements Iterable<State> {
                     case 3 -> new int[]{(x + 1) % 3, y}; // down
                     default -> null;
                 };
-            }
-
-
-            private int[][] cloneMatrix(int[][] mat) {
-                int[][] clone = new int[3][3];
-                for (int i = 0; i < 3; i++) {
-                    System.arraycopy(mat[i], 0, clone[i], 0, 3);
-                }
-                return clone;
             }
         };
     }
