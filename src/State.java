@@ -88,17 +88,8 @@ public class State implements Iterable<State> {
         return _parent;
     }
 
-    /**
-     * Creates a child state based on the current state and an operator.
-     *
-     * @param mat a 3x3 matrix representing the state.
-     * @param op  the operator defining the move.
-     * @return the newly created child state.
-     */
-    private State generateChild(int[][] mat, Operator op) {
-        State child = new State(mat, op);
-        child._parent = this;
-        return child;
+    public void set_parent(State _parent) {
+        this._parent = _parent;
     }
 
     /**
@@ -201,7 +192,7 @@ public class State implements Iterable<State> {
                             if (neighbor != null && _mat[neighbor[0]][neighbor[1]] == WHITE) {
                                 Operator curr = new Operator(i, j, neighbor[0], neighbor[1], _mat[i][j]);
                                 if (_operator == null || !_operator.isInverse(curr)) {
-                                    nextState = generateChild(_mat, curr);
+                                    nextState = new State(_mat, curr);
                                     direction++;
                                     foundNext = true;
                                     return;
