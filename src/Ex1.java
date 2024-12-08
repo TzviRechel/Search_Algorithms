@@ -4,11 +4,13 @@ import java.util.*;
 
 public class Ex1 {
     public static void main(String[] args) {
-        String filePath = "input.txt";
+        String filePath = "src/input.txt";
         Map<String, Object> params = parseInput(filePath);
         State start = new State((String) params.get("initial_state"));
         State goal = new State((String) params.get("goal_state"));
-        Searching algo = AlgorithmFactory.getAlgorithm((String)params.get("algorithm"));
+        String name = (String)params.get("algorithm");
+        boolean openList = (boolean)params.get("open_list");
+        Searching algo = AlgorithmFactory.getAlgorithm(name, start, goal, openList);
 //        Searching algo = new BFS();
 //        State start = new State("RR_" +
 //                "BB_" +
@@ -17,7 +19,7 @@ public class Ex1 {
         start.printState();
         goal.printState();
         long startTime = System.nanoTime();
-        algo.search(start, goal);
+        algo.search();
         long endTime = System.nanoTime();
         double elapsedTime = (endTime - startTime) / 1_000_000_000.0;
 
