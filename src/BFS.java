@@ -1,6 +1,3 @@
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -15,6 +12,11 @@ public class BFS extends Searching{
 
     @Override
     public void search() {
+        if (start.equals(goal)) {
+            _path.append("start is the goal\n");
+            cost = 0;
+            return;
+        }
         HashSet<State> openList = new HashSet<>();
         HashSet<State> closedList = new HashSet<>();
         Queue<State> Q = new LinkedList<>();
@@ -51,30 +53,25 @@ public class BFS extends Searching{
                 break;
             }
         }
-        if(myGoal == null){
-            System.out.println("no path");
-            return;
-        }
-        State path = myGoal;
-        Stack<Operator> S = new Stack<>();
-        while(path.get_parent()!=null){
-            S.add(path.get_operator());
-            path = path.get_parent();
-        }
-        cost = 0;
-       // try (PrintWriter writer = new PrintWriter(new FileWriter("output.txt"))) {
-            while (!S.isEmpty()) {
-                cost += S.peek().getCost();
-                System.out.print(S.pop().toString() + (S.isEmpty() ? "\n" : "--"));
-                //writer.print(S.pop().toString() + (S.isEmpty() ? "\n" : "--"));
+        if(myGoal == null) {
+            this._path.append("no path");
+        }else{
+            this.findPath(myGoal);
             }
-            System.out.println("cost: " + cost);
-            System.out.println("num: " + generate);
-           // writer.println("cost: " + cost);
-           // writer.println("num: " + generate);
-       // }
-       // catch (IOException e) {
-       //     e.printStackTrace(); // Handle exceptions if the file cannot be written
-       // }
     }
+
+    public void findPath(State myGoal){
+        cost = 0;
+        Stack<Operator> S = new Stack<>();
+        while(myGoal.get_parent()!=null){
+            S.add(myGoal.get_operator());
+            myGoal = myGoal.get_parent();
+        }
+        while(!S.isEmpty()){
+            cost += S.peek().getCost();
+            _path.append(S.pop().toString()).append(S.isEmpty() ? "\n" : "--");
+        }
+    }
+
 }
+

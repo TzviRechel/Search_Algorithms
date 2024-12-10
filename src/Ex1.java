@@ -11,20 +11,18 @@ public class Ex1 {
         String name = (String)params.get("algorithm");
         boolean openList = (boolean)params.get("open_list");
         Searching algo = AlgorithmFactory.getAlgorithm(name, start, goal, openList);
-//        Searching algo = new BFS();
-//        State start = new State("RR_" +
-//                "BB_" +
-//                "GGX");
-//        State goal = new State("GRRBB__GX");
         start.printState();
         goal.printState();
         long startTime = System.nanoTime();
         algo.search();
         long endTime = System.nanoTime();
         double elapsedTime = (endTime - startTime) / 1_000_000_000.0;
-
+        System.out.print(algo.getPath());
+        System.out.println("cost: " + algo.getCost());
+        System.out.println("num: " + algo.getNumberOfNodes());
         System.out.println("Elapsed time: " + elapsedTime + " seconds");
         }
+
 
     private static Map<String, Object> parseInput(String filePath) {
         // Map to store the parsed parameters and states
