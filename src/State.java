@@ -19,6 +19,7 @@ public class State implements Iterable<State> {
     private Operator _operator = null;    // The operator that generated this state
     private State _parent = null;         // Parent state for backtracking
     private int _aggregateCost;
+    private int _h = -1;
 
     /**
      * Constructor to initialize the state from a string representation.
@@ -111,12 +112,50 @@ public class State implements Iterable<State> {
         this._aggregateCost+=aggregateCost;
     }
 
-    public int h(){
-        return 1;
+    public int h(State goal){
+        if(this._h >= 0){
+            return this._h;
+        }
+        int sum = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if(_mat[i][j] != goal._mat[i][j]){
+                    switch (_mat[i][j]){
+                        case GREEN -> sum+=3;
+                        case RED -> sum+=10;
+                        case BLUE -> sum+=4;
+                        default -> {
+                        }
+                    }
+                }
+            }
+        }
+        this._h = sum;
+        return _h;
     }
 
     public int g(){
         return this._aggregateCost;
+    }
+
+    public int huristic(State goal){
+        int sum = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if(_mat[i][j] != goal._mat[i][j]){
+                    switch (_mat[i][j]){
+                        case GREEN -> sum+=3;
+                        case RED -> sum+=10;
+                        case BLUE -> sum+=4;
+                        default -> {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        this._h = sum;
+        return sum;
     }
 
     // Private helper methods
@@ -241,6 +280,21 @@ public class State implements Iterable<State> {
                 };
             }
         };
+    }
+
+    private int minSteps(int i, int j, int x, int y){
+        int colDist = y-j;
+        int rowDist = x-i;
+        int horizon = Math.min(
+                Math.abs(colDist), Math.min(
+                        Math.abs(colDist - 3), Math.abs(colDist + 3))
+        );
+        int vertical = Math.min(
+                Math.abs(rowDist), Math.min(
+                        Math.abs(rowDist - 3), Math.abs(rowDist + 3))
+        );
+
+        return horizon+vertical;
     }
 
 

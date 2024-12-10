@@ -20,7 +20,7 @@ public class Astar extends Searching{
 
             @Override
             public int compare(State o1, State o2) {
-                return Integer.compare(o1.g() + o1.h(), o2.g() + o2.h());
+                return Integer.compare(o1.g() + o1.h(goal), o2.g() + o2.h(goal));
             }
         });
         generate = 1;
@@ -50,7 +50,7 @@ public class Astar extends Searching{
                 } else if (openList.contains(child)){
                     for (State s : Q){
                         if(s.equals(child)){
-                            if(Integer.compare(s.g() + s.h(), child.g() + child.h()) == 1) {
+                            if(Integer.compare(s.g() + s.h(goal), child.g() + child.h(goal)) == 1) {
                                 Q.remove(s);
                                 Q.add(child);
                             }
