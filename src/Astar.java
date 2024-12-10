@@ -1,13 +1,10 @@
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
-public class BFS extends Searching{
+public class Astar extends Searching{
 
-
-    public BFS(State start, State goal, boolean withOpen) {
+    public Astar(State start, State goal, boolean withOpen) {
         super(start, goal, withOpen);
+
     }
 
     @Override
@@ -19,12 +16,17 @@ public class BFS extends Searching{
         }
         HashSet<State> openList = new HashSet<>();
         HashSet<State> closedList = new HashSet<>();
-        Queue<State> Q = new LinkedList<>();
+        PriorityQueue<State> Q = new PriorityQueue<State>(new Comparator<State>(){
+
+            @Override
+            public int compare(State o1, State o2) {
+                return Integer.compare(o1.g() + o1.h(), o2.g() + o2.h());
+            }
+        });
         generate = 1;
         State myGoal = null; // the goal that the algorithm will find
         Q.add(start);
         openList.add(start);
-        boolean out = false; // flag if find the goal state
         while (!Q.isEmpty()){
             if(this.with_open){ //print the open list
                 System.out.println("open list:");
@@ -34,23 +36,28 @@ public class BFS extends Searching{
             }
             State curr = Q.poll();
             openList.remove(curr);
+            if(curr.equals(goal)){
+                myGoal = curr;
+                break;
+            }
             closedList.add(curr);
             for(State child : curr) {
                 generate++;
                 if (!openList.contains(child) && !closedList.contains(child)) {
-                    if (child.equals(goal)) {
-                        child.set_parent(curr);
-                        myGoal = child;
-                        out = true;
-                        break;
-                    }
                     child.set_parent(curr);
                     Q.add(child);
                     openList.add(child);
+                } else if (openList.contains(child)){
+                    for (State s : Q){
+                        if(s.equals(child)){
+                            if(Integer.compare(s.g() + s.h(), child.g() + child.h()) == 1) {
+                                Q.remove(s);
+                                Q.add(child);
+                            }
+                            break;
+                        }
+                    }
                 }
-            }
-            if(out){
-                break;
             }
         }
         if(myGoal == null) {
@@ -58,7 +65,7 @@ public class BFS extends Searching{
         }else{
             cost = myGoal.g();
             this.findPath(myGoal);
-            }
+        }
     }
 
     public void findPath(State myGoal){
@@ -73,6 +80,4 @@ public class BFS extends Searching{
             _path.append(S.pop().toString()).append(S.isEmpty() ? "\n" : "--");
         }
     }
-
 }
-

@@ -3,7 +3,7 @@ public class AlgorithmFactory {
         return switch (algorithmName.toUpperCase()) {
             case "BFS" -> new BFS(start, goal, with_open);
             case "DFID" -> new DFID(start, goal, with_open);
-           // case "A*" -> new AStar();
+           // case "Astar" -> new AStar();
            // case "IDA*" -> new IDAStar();
             //case "DFBNB" -> new DFBnB();
             default -> throw new IllegalArgumentException("Unknown algorithm: " + algorithmName);

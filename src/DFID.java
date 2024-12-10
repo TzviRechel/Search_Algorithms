@@ -24,6 +24,7 @@ public class DFID extends Searching {
 
     private String limitedDFS(State current, State goal, int limit, HashSet<State> visited) {
         if (current.equals(goal)) {
+            cost = current.g();
             findPath(current); // reconstruct the path
             return "success";
         } else if (limit == 0) {
@@ -54,7 +55,7 @@ public class DFID extends Searching {
     }
 
     private void findPath(State goalState) {
-        cost = 0;
+       // cost = 0;
         Stack<Operator> stack = new Stack<>();
         while (goalState.get_parent() != null) {
             stack.add(goalState.get_operator());
@@ -62,7 +63,7 @@ public class DFID extends Searching {
         }
         while (!stack.isEmpty()) {
             Operator op = stack.pop();
-            cost += op.getCost();
+           // cost += op.getCost();
             _path.append(op.toString()).append(stack.isEmpty() ? "\n" : "--");
         }
     }

@@ -18,6 +18,7 @@ public class State implements Iterable<State> {
     private final int[][] _mat = new int[3][3]; // 3x3 grid representing the state
     private Operator _operator = null;    // The operator that generated this state
     private State _parent = null;         // Parent state for backtracking
+    private int _aggregateCost;
 
     /**
      * Constructor to initialize the state from a string representation.
@@ -61,6 +62,7 @@ public class State implements Iterable<State> {
     private void move(Operator op) {
         this._mat[op.get_source()[0]][op.get_source()[1]] = WHITE;
         this._mat[op.get_dest()[0]][op.get_dest()[1]] = op.get_color();
+        this._aggregateCost+=op.getCost();
     }
 
     /**
@@ -103,6 +105,18 @@ public class State implements Iterable<State> {
             }
             System.out.println();
         }
+    }
+
+    private void addCost(int aggregateCost) {
+        this._aggregateCost+=aggregateCost;
+    }
+
+    public int h(){
+        return 1;
+    }
+
+    public int g(){
+        return this._aggregateCost;
     }
 
     // Private helper methods
@@ -193,6 +207,7 @@ public class State implements Iterable<State> {
                                 Operator curr = new Operator(i, j, neighbor[0], neighbor[1], _mat[i][j]);
                                 if (_operator == null || !_operator.isInverse(curr)) {
                                     nextState = new State(_mat, curr);
+                                    nextState.addCost(_aggregateCost);
                                     direction++;
                                     foundNext = true;
                                     return;
@@ -227,6 +242,8 @@ public class State implements Iterable<State> {
             }
         };
     }
+
+
 }
 
 
