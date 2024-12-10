@@ -40,6 +40,15 @@ public class DFID extends Searching {
                 child.set_parent(current); // Set parent for path reconstruction
                 generate++; // Count generated nodes
 
+                // print open list
+                if(this.with_open){ //print the open list
+                    System.out.println("open list:");
+                    System.out.println("------------------------------------------------------------");
+                    child.printState();
+                    System.out.println();
+                    System.out.println("------------------------------------------------------------");
+                }
+
                 String result = limitedDFS(child, goal, limit - 1, visited);
 
                 if (result.equals("cutoff")) {

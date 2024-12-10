@@ -20,6 +20,7 @@ public class State implements Iterable<State> {
     private State _parent = null;         // Parent state for backtracking
     private int _aggregateCost;
     private int _h = -1;
+    private int creationTime;
 
     /**
      * Constructor to initialize the state from a string representation.
@@ -95,6 +96,15 @@ public class State implements Iterable<State> {
         this._parent = _parent;
     }
 
+    //for the algorithms
+    public int getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(int creationTime) {
+        this.creationTime = creationTime;
+    }
+
     /**
      * Prints the current state in a readable 3x3 grid format.
      */
@@ -112,6 +122,11 @@ public class State implements Iterable<State> {
         this._aggregateCost+=aggregateCost;
     }
 
+    /**
+     * heuristic function
+     * @param goal
+     * @return
+     */
     public int h(State goal){
         if(this._h >= 0){
             return this._h;
@@ -136,26 +151,6 @@ public class State implements Iterable<State> {
 
     public int g(){
         return this._aggregateCost;
-    }
-
-    public int huristic(State goal){
-        int sum = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if(_mat[i][j] != goal._mat[i][j]){
-                    switch (_mat[i][j]){
-                        case GREEN -> sum+=3;
-                        case RED -> sum+=10;
-                        case BLUE -> sum+=4;
-                        default -> {
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        this._h = sum;
-        return sum;
     }
 
     // Private helper methods

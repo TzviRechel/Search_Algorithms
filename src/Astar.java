@@ -20,6 +20,9 @@ public class Astar extends Searching{
 
             @Override
             public int compare(State o1, State o2) {
+                if (Integer.compare(o1.g() + o1.h(goal), o2.g() + o2.h(goal)) == 0){
+                    return Integer.compare(o1.getCreationTime(), o2.getCreationTime());
+                }
                 return Integer.compare(o1.g() + o1.h(goal), o2.g() + o2.h(goal));
             }
         });
@@ -28,11 +31,15 @@ public class Astar extends Searching{
         Q.add(start);
         openList.add(start);
         while (!Q.isEmpty()){
+            //print open list
             if(this.with_open){ //print the open list
                 System.out.println("open list:");
+                System.out.println("------------------------------------------------------------");
                 for(State s : Q){
                     s.printState();
+                    System.out.println();
                 }
+                System.out.println("------------------------------------------------------------");
             }
             State curr = Q.poll();
             openList.remove(curr);
@@ -43,6 +50,7 @@ public class Astar extends Searching{
             closedList.add(curr);
             for(State child : curr) {
                 generate++;
+                child.setCreationTime(generate);
                 if (!openList.contains(child) && !closedList.contains(child)) {
                     child.set_parent(curr);
                     Q.add(child);

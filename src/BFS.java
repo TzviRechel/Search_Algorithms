@@ -28,9 +28,12 @@ public class BFS extends Searching{
         while (!Q.isEmpty()){
             if(this.with_open){ //print the open list
                 System.out.println("open list:");
+                System.out.println("------------------------------------------------------------");
                 for(State s : Q){
                     s.printState();
+                    System.out.println();
                 }
+                System.out.println("------------------------------------------------------------");
             }
             State curr = Q.poll();
             openList.remove(curr);
