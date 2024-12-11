@@ -69,7 +69,7 @@ public class Astar extends Searching{
             }
         }
         if(myGoal == null) {
-            this._path.append("no path");
+            this._path.append("no path\n");
         }else{
             cost = myGoal.g();
             this.findPath(myGoal);

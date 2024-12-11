@@ -21,8 +21,13 @@ public class Ex1 {
         //write to file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
             writer.write(algo.getPath());
-            writer.write("cost: " + algo.getCost() + "\n");
-            writer.write("num: " + algo.getNumberOfNodes() + "\n");
+            if(algo.getPath().equals("no path\n")){
+                writer.write("num: \n");
+                writer.write("cost: inf\n");
+            }else {
+                writer.write("num: " + algo.getNumberOfNodes() + "\n");
+                writer.write("cost: " + algo.getCost() + "\n");
+            }
             if (time) {
                 writer.write(elapsedTime + " seconds\n");
             }
@@ -31,8 +36,8 @@ public class Ex1 {
         }
         //print
         System.out.print(algo.getPath());
-        System.out.println("cost: " + algo.getCost());
         System.out.println("num: " + algo.getNumberOfNodes());
+        System.out.println("cost: " + algo.getCost());
         if(time) {
             System.out.println(elapsedTime + " seconds");
         }

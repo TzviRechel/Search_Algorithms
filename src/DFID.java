@@ -12,10 +12,9 @@ public class DFID extends Searching {
         for (int depth = 1; ; depth++) {
             HashSet<State> visited = new HashSet<>();
             String result = limitedDFS(start, goal, depth, visited);
-
             if (!result.equals("cutoff")) {
                 if (result.equals("fail")) {
-                    _path.append("no path");
+                    _path.append("no path\n");
                 }
                 break;
             }

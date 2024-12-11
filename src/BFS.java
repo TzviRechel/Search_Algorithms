@@ -20,7 +20,7 @@ public class BFS extends Searching{
         HashSet<State> openList = new HashSet<>();
         HashSet<State> closedList = new HashSet<>();
         Queue<State> Q = new LinkedList<>();
-        generate = 1;
+        generate = 0; // no count the start state
         State myGoal = null; // the goal that the algorithm will find
         Q.add(start);
         openList.add(start);
@@ -57,7 +57,8 @@ public class BFS extends Searching{
             }
         }
         if(myGoal == null) {
-            this._path.append("no path");
+            this._path.append("no path\n");
+
         }else{
             cost = myGoal.g();
             this.findPath(myGoal);

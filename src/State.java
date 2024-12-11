@@ -73,7 +73,11 @@ public class State implements Iterable<State> {
      * @param other the state to compare with.
      * @return true if the states are identical, false otherwise.
      */
-    public boolean equals(State other) {
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        State other = (State) obj;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (this._mat[i][j] != other._mat[i][j]) {
@@ -82,6 +86,17 @@ public class State implements Iterable<State> {
             }
         }
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                result = 31 * result + _mat[i][j];
+            }
+        }
+        return result;
     }
 
     public Operator get_operator() {
@@ -276,23 +291,6 @@ public class State implements Iterable<State> {
             }
         };
     }
-
-    private int minSteps(int i, int j, int x, int y){
-        int colDist = y-j;
-        int rowDist = x-i;
-        int horizon = Math.min(
-                Math.abs(colDist), Math.min(
-                        Math.abs(colDist - 3), Math.abs(colDist + 3))
-        );
-        int vertical = Math.min(
-                Math.abs(rowDist), Math.min(
-                        Math.abs(rowDist - 3), Math.abs(rowDist + 3))
-        );
-
-        return horizon+vertical;
-    }
-
-
 }
 
 
