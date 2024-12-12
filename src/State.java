@@ -296,6 +296,30 @@ public class State implements Iterable<State> {
             }
         };
     }
+    public static int findUpperBound(State start, State goal){ // for DFBnB
+        int sum = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if(start._mat[i][j] != goal._mat[i][j]){
+                    switch (start._mat[i][j]){
+                        case GREEN -> sum+=3;
+                        case RED -> sum+=10;
+                        case BLUE -> sum+=4;
+                        default -> {
+                        }
+                    }
+                    switch (goal._mat[i][j]){
+                        case GREEN -> sum+=3;
+                        case RED -> sum+=10;
+                        case BLUE -> sum+=4;
+                        default -> {
+                        }
+                    }
+                }
+            }
+        }
+        return sum;
+    }
 }
 
 

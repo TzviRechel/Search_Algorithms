@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Ex1 {
     public static void main(String[] args) {
-        String filePath = "src/input.txt";
+        String filePath = "input.txt";
         Map<String, Object> params = parseInput(filePath); //map to store the parameters in the file
         State start = new State((String) params.get("initial_state"));
         State goal = new State((String) params.get("goal_state"));
@@ -22,11 +22,11 @@ public class Ex1 {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
             writer.write(algo.getPath());
             if(algo.getPath().equals("no path\n")){
-                writer.write("num: \n");
-                writer.write("cost: inf\n");
+                writer.write("Num: \n");
+                writer.write("Cost: inf\n");
             }else {
-                writer.write("num: " + algo.getNumberOfNodes() + "\n");
-                writer.write("cost: " + algo.getCost() + "\n");
+                writer.write("Num: " + algo.getNumberOfNodes() + "\n");
+                writer.write("Cost: " + algo.getCost() + "\n");
             }
             if (time) {
                 writer.write(elapsedTime + " seconds\n");
