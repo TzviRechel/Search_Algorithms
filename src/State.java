@@ -21,6 +21,7 @@ public class State implements Iterable<State> {
     private int _aggregateCost;
     private int _h = -1;
     private int creationTime;
+    public boolean out = false; // for IDA*
 
     /**
      * Constructor to initialize the state from a string representation.
@@ -166,6 +167,10 @@ public class State implements Iterable<State> {
 
     public int g(){
         return this._aggregateCost;
+    }
+
+    public int f(State goal){
+        return this.h(goal) + this.g();
     }
 
     // Private helper methods

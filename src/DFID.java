@@ -3,13 +3,16 @@ import java.util.Stack;
 
 public class DFID extends Searching {
 
+
+
     public DFID(State start, State goal, boolean withOpen) {
         super(start, goal, withOpen);
     }
 
     @Override
     public void search() {
-        for (int depth = 1; ; depth++) {
+        for (int depth = 1029; depth<1030; depth++) {
+            System.out.println(depth);
             HashSet<State> visited = new HashSet<>();
             String result = limitedDFS(start, goal, depth, visited);
             if (!result.equals("cutoff")) {
@@ -20,6 +23,7 @@ public class DFID extends Searching {
             }
         }
     }
+
 
     private String limitedDFS(State current, State goal, int limit, HashSet<State> visited) {
         if (current.equals(goal)) {
@@ -34,11 +38,10 @@ public class DFID extends Searching {
 
             for (State child : current) {
                 if (visited.contains(child)) {
-                    continue; // Skip already visited states
+                    continue; // loop avoidance
                 }
                 child.set_parent(current); // Set parent for path reconstruction
                 generate++; // Count generated nodes
-
                 // print open list
                 if(this.with_open){ //print the open list
                     System.out.println("open list:");
@@ -57,7 +60,7 @@ public class DFID extends Searching {
                 }
             }
 
-            visited.remove(current); // Backtrack
+            visited.remove(current);
             return isCutoff ? "cutoff" : "fail";
         }
     }
