@@ -11,7 +11,7 @@ public class DFID extends Searching {
 
     @Override
     public void search() {
-        for (int depth = 1029; depth<1030; depth++) {
+        for (int depth = 1; ; depth++) {
             System.out.println(depth);
             HashSet<State> visited = new HashSet<>();
             String result = limitedDFS(start, goal, depth, visited);
