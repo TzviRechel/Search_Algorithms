@@ -16,7 +16,7 @@ public class DFBnB extends Searching {
         HashSet<State> open_list = new HashSet<>();
         S.push(start);
         open_list.add(start);
-        int t = State.findUpperBound(start, goal);
+        int t = Integer.MAX_VALUE;
         while(!S.isEmpty()){
             //print open list
             if(this.with_open){ //print the open list

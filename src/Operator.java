@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Operator {
 
     private final int[] _source = new int[2]; //
@@ -19,11 +21,11 @@ public class Operator {
     }
 
     public int[] get_dest() {
-        return _dest;
+        return Arrays.copyOf(_dest, _dest.length);
     }
 
     public int[] get_source() {
-        return _source;
+        return Arrays.copyOf(_source, _source.length);
     }
 
     public int getCost(){
@@ -36,7 +38,6 @@ public class Operator {
     }
 
     public String toString(){
-        String s = "";
         //find the color
         String color = switch (get_color()) {
             case 2 -> "G";
@@ -44,11 +45,12 @@ public class Operator {
             case 4 -> "B";
             default -> "";
         };
-        s += "(" + (this._source[0]+1) + "," + (this._source[1]+1) + ")" + ":" + color + ":" + "(" + (this._dest[0]+1) +"," + (this._dest[1]+1) + ")";
-        return s;
+        return String.format("(%d,%d):%s:(%d,%d)",
+                _source[0] + 1, _source[1] + 1, color, _dest[0] + 1, _dest[1] + 1);
     }
 
 
+    // Checks if two operators represent opposite operations
     public boolean isInverse(Operator op) {
         if(op == null){return false;}
         return java.util.Arrays.equals(this._source, op._dest) &&

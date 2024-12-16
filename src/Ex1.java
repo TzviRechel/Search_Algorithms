@@ -18,7 +18,8 @@ public class Ex1 {
         algo.search();
         long endTime = System.nanoTime();
         double elapsedTime = (endTime - startTime) / 1_000_000_000.0;
-        //write to file
+
+        //write the result to output file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
             writer.write(algo.getPath());
             if(algo.getPath().equals("no path\n")){
@@ -34,7 +35,8 @@ public class Ex1 {
         } catch (IOException e) {
             System.err.println("Error writing to file: " + e.getMessage());
         }
-        //print
+
+        //print the result
         System.out.print(algo.getPath());
         System.out.println("num: " + algo.getNumberOfNodes());
         System.out.println("cost: " + algo.getCost());

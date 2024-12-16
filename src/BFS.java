@@ -3,6 +3,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
+/**
+ * Abstract base class for implementing state-space search algorithms.
+ */
 public class BFS extends Searching{
 
 

@@ -1,27 +1,24 @@
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/**
- * Represents a state in a 3x3 grid-based puzzle. Each cell can have a specific color or state.
- * Provides functionality to generate new states by applying moves and to iterate over possible child states.
- */
+
 public class State implements Iterable<State> {
 
-    // Color constants
+    // Constants representing cell colors
     private static final int WHITE = 0;
     private static final int BLACK = 1;
     private static final int GREEN = 2;
     private static final int RED = 3;
     private static final int BLUE = 4;
 
-    private final int[][] _mat = new int[3][3]; // 3x3 grid representing the state
-    private Operator _operator = null;    // The operator that generated this state
+    private final int[][] _mat = new int[3][3]; // 3x3 matrix representing the state
+    private Operator _operator = null;    // Operator that generated this state
     private State _parent = null;         // Parent state for backtracking
-    private int _aggregateCost;
-    private int _h = -1;
+private int _aggregateCost;               // Accumulated cost to reach this state
+    private int _h = -1;                  // Heuristic value
     private int creationTime;
-    public boolean out = false; // for IDA*
+    public boolean out = false;             // Flag used for the stack in the algorithms
 
     /**
      * Constructor to initialize the state from a string representation.
@@ -48,7 +45,7 @@ public class State implements Iterable<State> {
      * Constructor to initialize a new state based on a matrix and an operator.
      * Assumes the operator is valid.
      *
-     * @param mat a 3x3 matrix representing the state.
+     * @param mat a 3x3 matrix representing the parent of this state.
      * @param op  the operator that generated this state.
      */
     public State(int[][] mat, Operator op) {
@@ -69,79 +66,9 @@ public class State implements Iterable<State> {
     }
 
     /**
-     * Checks if this state is equal to another state, according to the matrices.
-     *
-     * @param other the state to compare with.
-     * @return true if the states are identical, false otherwise.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        State other = (State) obj;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (this._mat[i][j] != other._mat[i][j]) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 17;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                result = 31 * result + _mat[i][j];
-            }
-        }
-        return result;
-    }
-
-    public Operator get_operator() {
-        return this._operator;
-    }
-
-    public State get_parent() {
-        return _parent;
-    }
-
-    public void set_parent(State _parent) {
-        this._parent = _parent;
-    }
-
-    //for the algorithms
-    public int getCreationTime() {
-        return creationTime;
-    }
-
-    public void setCreationTime(int creationTime) {
-        this.creationTime = creationTime;
-    }
-
-    /**
-     * Prints the current state in a readable 3x3 grid format.
-     */
-    public void printState() {
-        for (int i = 0; i < 3; i++) {
-            System.out.print("[");
-            for (int j = 0; j < 3; j++) {
-                System.out.print(mapColorToChar(_mat[i][j]) + (j < 2 ? "," : "]"));
-            }
-            System.out.println();
-        }
-    }
-
-    private void addCost(int aggregateCost) {
-        this._aggregateCost+=aggregateCost;
-    }
-
-    /**
-     * heuristic function
-     * @param goal
-     * @return
+     * Calculates the heuristic function for this state based on the goal state.
+     * @param goal The goal state to compare against.
+     * @return The heuristic value.
      */
     public int h(State goal){
         if(this._h >= 0){
@@ -165,15 +92,92 @@ public class State implements Iterable<State> {
         return _h;
     }
 
+    /**
+     * Returns the total cost (G value) to reach this state.
+     *
+     * @return The accumulated cost.
+     */
     public int g(){
         return this._aggregateCost;
     }
 
+    /**
+     * Calculates the total estimated cost (F value) to reach the goal state.
+     * F = G (cost so far) + H (heuristic cost to goal).
+     *
+     * @param goal The goal state.
+     * @return The F value.
+     */
     public int f(State goal){
         return this.h(goal) + this.g();
     }
 
-    // Private helper methods
+    /**
+     * Prints the current state in a readable 3x3 grid format.
+     */
+    public void printState() {
+        for (int i = 0; i < 3; i++) {
+            System.out.print("[");
+            for (int j = 0; j < 3; j++) {
+                System.out.print(mapColorToChar(_mat[i][j]) + (j < 2 ? "," : "]"));
+            }
+            System.out.println();
+        }
+    }
+
+    /**
+     * Checks if this state is equal to another state, according to the matrices.
+     *
+     * @param obj The object to compare.
+     * @return true if the states are identical, false otherwise.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        State other = (State) obj;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (this._mat[i][j] != other._mat[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(_mat);
+    }
+
+    // getters and setters
+    public Operator get_operator() {
+        return this._operator;
+    }
+
+    public State get_parent() {
+        return _parent;
+    }
+
+    public void set_parent(State _parent) {
+        this._parent = _parent;
+    }
+
+    //for the algorithms
+    public int getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(int creationTime) {
+        this.creationTime = creationTime;
+    }
+
+
+
+    private void addCost(int aggregateCost) {
+        this._aggregateCost+=aggregateCost;
+    }
 
     /**
      * Maps a character to its corresponding color.
@@ -295,30 +299,6 @@ public class State implements Iterable<State> {
                 };
             }
         };
-    }
-    public static int findUpperBound(State start, State goal){ // for DFBnB
-        int sum = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if(start._mat[i][j] != goal._mat[i][j]){
-                    switch (start._mat[i][j]){
-                        case GREEN -> sum+=3;
-                        case RED -> sum+=10;
-                        case BLUE -> sum+=4;
-                        default -> {
-                        }
-                    }
-                    switch (goal._mat[i][j]){
-                        case GREEN -> sum+=3;
-                        case RED -> sum+=10;
-                        case BLUE -> sum+=4;
-                        default -> {
-                        }
-                    }
-                }
-            }
-        }
-        return sum;
     }
 }
 

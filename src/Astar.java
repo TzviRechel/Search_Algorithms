@@ -20,10 +20,10 @@ public class Astar extends Searching{
 
             @Override
             public int compare(State o1, State o2) {
-                if (Integer.compare(o1.g() + o1.h(goal), o2.g() + o2.h(goal)) == 0){
+                if (Integer.compare(o1.f(goal), o2.f(goal)) == 0){
                     return Integer.compare(o1.getCreationTime(), o2.getCreationTime());
                 }
-                return Integer.compare(o1.g() + o1.h(goal), o2.g() + o2.h(goal));
+                return Integer.compare(o1.f(goal), o2.f(goal));
             }
         });
         generate = 1;
@@ -58,7 +58,7 @@ public class Astar extends Searching{
                 } else if (openList.contains(child)){
                     for (State s : Q){
                         if(s.equals(child)){
-                            if(Integer.compare(s.g() + s.h(goal), child.g() + child.h(goal)) == 1) {
+                            if(Integer.compare(s.f(goal), child.f(goal)) == 1) {
                                 Q.remove(s);
                                 Q.add(child);
                             }
@@ -77,14 +77,12 @@ public class Astar extends Searching{
     }
 
     public void findPath(State myGoal){
-        //cost = 0;
         Stack<Operator> S = new Stack<>();
         while(myGoal.get_parent()!=null){
             S.add(myGoal.get_operator());
             myGoal = myGoal.get_parent();
         }
         while(!S.isEmpty()){
-            //cost += S.peek().getCost();
             _path.append(S.pop().toString()).append(S.isEmpty() ? "\n" : "--");
         }
     }

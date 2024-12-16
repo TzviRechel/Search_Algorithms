@@ -66,7 +66,6 @@ public class DFID extends Searching {
     }
 
     private void findPath(State goalState) {
-       // cost = 0;
         Stack<Operator> stack = new Stack<>();
         while (goalState.get_parent() != null) {
             stack.add(goalState.get_operator());
@@ -74,7 +73,6 @@ public class DFID extends Searching {
         }
         while (!stack.isEmpty()) {
             Operator op = stack.pop();
-           // cost += op.getCost();
             _path.append(op.toString()).append(stack.isEmpty() ? "\n" : "--");
         }
     }
