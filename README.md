@@ -96,10 +96,10 @@ The program writes the results to a file named `output.txt` and prints them to t
 ### Example Output File
 
 ```
-Right, Down, Left
+(1,1):R:(1,3)--(3,1):G:(1,1)
 Num: 11
-Cost: 9
-3.52 seconds
+Cost: 13
+0.002 seconds
 ```
 
 - **First line**: Solution path as a sequence of moves (Right, Left, etc.).
