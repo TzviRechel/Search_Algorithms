@@ -6,18 +6,24 @@ public class Ex1 {
     public static void main(String[] args) {
         String filePath = "input.txt";
         Map<String, Object> params = parseInput(filePath); //map to store the parameters in the file
+
+         // Initialize states and parameters
         State start = new State((String) params.get("initial_state"));
         State goal = new State((String) params.get("goal_state"));
         String name = (String)params.get("algorithm");
         boolean openList = (boolean)params.get("open_list");
         boolean time = (boolean)params.get("with_time");
+
+        // Get the algorithm
         Searching algo = AlgorithmFactory.getAlgorithm(name, start, goal, openList);
         start.printState();
         goal.printState();
-        long startTime = System.nanoTime();
+
+        // Execute the search
+       long startTime = System.currentTimeMillis();
         algo.search();
-        long endTime = System.nanoTime();
-        double elapsedTime = (endTime - startTime) / 1_000_000_000.0;
+       long endTime = System.currentTimeMillis();
+       double elapsedTime = (endTime - startTime) / 1000.0;
 
         //write the result to output file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
