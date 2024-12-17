@@ -30,7 +30,7 @@ public class State implements Iterable<State> {
      */
     public State(String start) {
         if (start.length() != 9) {
-            throw new IllegalArgumentException("Input must represent a 3x3 grid (length 9).");
+            throw new IllegalArgumentException("Input must represent a 3x3 matrix (length 9).");
         }
 
         for (int i = 0; i < 3; i++) {

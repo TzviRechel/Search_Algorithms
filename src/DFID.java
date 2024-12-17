@@ -12,7 +12,6 @@ public class DFID extends Searching {
     @Override
     public void search() {
         for (int depth = 1; ; depth++) {
-            System.out.println(depth);
             HashSet<State> visited = new HashSet<>();
             String result = limitedDFS(start, goal, depth, visited);
             if (!result.equals("cutoff")) {
@@ -46,7 +45,9 @@ public class DFID extends Searching {
                 if(this.with_open){ //print the open list
                     System.out.println("open list:");
                     System.out.println("------------------------------------------------------------");
-                    child.printState();
+                    for(State s : visited){
+                        s.printState();
+                    }
                     System.out.println();
                     System.out.println("------------------------------------------------------------");
                 }
