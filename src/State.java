@@ -15,7 +15,7 @@ public class State implements Iterable<State> {
     private final int[][] _mat = new int[3][3]; // 3x3 matrix representing the state
     private Operator _operator = null;    // Operator that generated this state
     private State _parent = null;         // Parent state for backtracking
-private int _aggregateCost;               // Accumulated cost to reach this state
+    private int _aggregateCost;               // Accumulated cost to reach this state
     private int _h = -1;                  // Heuristic value
     private int creationTime;
     public boolean out = false;             // Flag used for the stack in the algorithms
@@ -81,7 +81,7 @@ private int _aggregateCost;               // Accumulated cost to reach this stat
                     switch (_mat[i][j]){
                         case GREEN -> sum+=3;
                         case RED -> sum+=10;
-                        case BLUE -> sum+=4;
+                        case BLUE -> sum+=1;
                         default -> {
                         }
                     }

@@ -16,6 +16,7 @@ public class IDAstar extends Searching{
         int t = start.h(goal);
         int INF = Integer.MAX_VALUE;
         while (t != INF){
+            start.out = false;
             int minF = INF;
             S.push(start);
             open_list.add(start);
@@ -33,7 +34,7 @@ public class IDAstar extends Searching{
                     System.out.println("------------------------------------------------------------");
                 }
                 State current = S.pop();
-                if(current.out){
+                if(current.out){ // out is the flag indicate that we finish with this state
                     open_list.remove(current);
                 }else{
                     current.out = true;
@@ -44,7 +45,8 @@ public class IDAstar extends Searching{
                             minF = Math.min(minF, child.f(goal));
                             continue;
                         }
-                        State inStack = null;
+                        // loop avoidance
+                        State inStack = null; // pointer to the same state in the stack
                         if(open_list.contains(child)){
                             // in this case, we find the identical state in the stack for to check if it marked as out
                             // end to replace it if needed

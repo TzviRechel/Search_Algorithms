@@ -26,7 +26,6 @@ public class Astar extends Searching{
                 return Integer.compare(o1.f(goal), o2.f(goal));
             }
         });
-        generate = 1;
         State myGoal = null; // the goal that the algorithm will find
         Q.add(start);
         openList.add(start);
@@ -58,9 +57,10 @@ public class Astar extends Searching{
                 } else if (openList.contains(child)){
                     for (State s : Q){
                         if(s.equals(child)){
-                            if(Integer.compare(s.f(goal), child.f(goal)) == 1) {
+                            if(s.f(goal) > child.f(goal)) {
                                 Q.remove(s);
                                 Q.add(child);
+                                child.set_parent(curr);
                             }
                             break;
                         }

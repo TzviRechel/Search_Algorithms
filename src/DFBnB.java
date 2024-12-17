@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Stack;
 
@@ -17,9 +16,10 @@ public class DFBnB extends Searching {
         S.push(start);
         open_list.add(start);
         int t = Integer.MAX_VALUE;
+
         while(!S.isEmpty()){
-            //print open list
-            if(this.with_open){ //print the open list
+            // Print open list if required
+            if(this.with_open){
                 System.out.println("open list:");
                 System.out.println("------------------------------------------------------------");
                 for(State s : S){
@@ -30,72 +30,79 @@ public class DFBnB extends Searching {
                 }
                 System.out.println("------------------------------------------------------------");
             }
+
             State current = S.pop();
+
             if(current.out){
                 open_list.remove(current);
             }else {
                 current.out = true;
                 S.push(current);
+
                 ArrayList<State> N = new ArrayList<>();
                 for (State child : current) {
                     generate++;
                     child.setCreationTime(generate);
                     N.add(child);
+                }
+
+                    // Sort children
                     N.sort((o1, o2) -> {
                         if (Integer.compare(o1.f(goal), o2.f(goal)) == 0) {
                             return Integer.compare(o1.getCreationTime(), o2.getCreationTime());
                         }
                         return Integer.compare(o1.f(goal), o2.f(goal));
                     });
-                }
-                //for (State n : N) {
-                for (int k = 0; k < N.size(); k++) {
-                    if (N.get(k).f(goal) >= t) {
-                        // remove n and all after it
-                        int i = N.indexOf(N.get(k));
-                        N.subList(i, N.size()).clear();
+
+                // filter N array
+                ArrayList<State> filteredN = new ArrayList<>();
+
+                for (State child : N) {
+                    if (child.f(goal) >= t) {
                         break; // Exit the loop as further elements are no longer relevant
-                    } else {
-                        State inStack = null;
-                        if (open_list.contains(N.get(k))) {
-                            // in this case, we find the identical state in the stack for to check if it marked as out
-                            // end to replace it if needed
-                            for (State g : S) {
-                                if (g.equals(N.get(k))) {
-                                    inStack = g;
-                                    break;
-                                }
+                    }
+
+                    // Loop avoidance
+                    State inStack = null;
+                    if (open_list.contains(child)) {
+                        // in this case, we find the identical state in the stack for to check if it marked as out
+                        // end replace it if needed
+                        for (State g : S) {
+                            if (g.equals(child)) {
+                                inStack = g;
+                                break;
                             }
-                            if (inStack == null) {
-                                System.out.println("error");
-                                return;
-                            }
+                        }
+                        if (inStack == null) {
+                            System.out.println("error");
+                            return;
+                        }
                             if (inStack.out) {
-                                N.remove(N.get(k));
+                                continue; // remove from N
                             } else {
-                                if (inStack.f(goal) <= N.get(k).f(goal)) {
-                                    N.remove(N.get(k));
+                                if (inStack.f(goal) <= child.f(goal)) {
+                                    continue;
                                 } else {
                                     S.remove(inStack);
-                                    open_list.remove(N.get(k));
+                                    open_list.remove(child);
+                                    filteredN.add(child);
                                 }
                             }
 
-                        } else {
-                            if (N.get(k).equals(goal)) {
-                                t = N.get(k).f(goal);
-                                cost = N.get(k).g();
-                                this.findPath(N.get(k), S);
-                                // remove n and all after it
-                                int i = N.indexOf(N.get(k));
-                                N.subList(i, N.size()).clear();
-                                break; // Exit the loop as further elements are no longer relevant
-                            }
-                        }
+                    } else  if (child.equals(goal)) {
+                            t = child.f(goal);
+                            cost = child.g();
+                            this.findPath(child, S);
+                            break; // Exit the loop as further elements are no longer relevant
+                    }else{
+                        filteredN.add(child);
                     }
+
                 }
-                for (int i =N.size()-1; i>=0; i--){
-                    State n = N.get(i);
+
+                // Push children to the stack in reverse order
+                for (int i = filteredN.size() - 1; i >= 0; i--) {
+                    State n = filteredN.get(i);
                     S.push(n);
                     open_list.add(n);
                 }
@@ -112,5 +119,4 @@ public class DFBnB extends Searching {
         }
         _path.append(n.get_operator().toString()).append("\n");
     }
-
 }

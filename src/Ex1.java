@@ -26,7 +26,7 @@ public class Ex1 {
        double elapsedTime = (endTime - startTime) / 1000.0;
 
         //write the result to output file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(name+".txt"))) {
             writer.write(algo.getPath());
             if(algo.getPath().equals("no path\n")){
                 writer.write("Num: \n");
