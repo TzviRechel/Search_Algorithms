@@ -2,6 +2,13 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ *
+ *  This class represents a state in the search problem.
+ *  It implements an iterable to generate the children one by one,
+ *  based on the possible operators.
+ *
+ */
 
 public class State implements Iterable<State> {
 
@@ -17,20 +24,22 @@ public class State implements Iterable<State> {
     private State _parent = null;         // Parent state for backtracking
     private int _aggregateCost;               // Accumulated cost to reach this state
     private int _h = -1;                  // Heuristic value
-    private int creationTime;
-    public boolean out = false;             // Flag used for the stack in the algorithms
+    private int creationTime;               // Used to establish an order relationship between states
+    public boolean out = false;             // Flag for the stack in DFS-based algorithms
+
+    // Constructors
 
     /**
      * Constructor to initialize the state from a string representation.
      *
-     * @param start a string of length 9 representing the 3x3 grid.
+     * @param start a string of length 9 representing the 3x3 board.
      *              Each character represents a cell:
      *              'R' -> Red, 'B' -> Blue, 'G' -> Green, '_' -> White, 'X' -> Black.
      * @throws IllegalArgumentException if the input is invalid.
      */
     public State(String start) {
         if (start.length() != 9) {
-            throw new IllegalArgumentException("Input must represent a 3x3 matrix (length 9).");
+            throw new IllegalArgumentException("Input must represent a 3x3 board (length 9).");
         }
 
         for (int i = 0; i < 3; i++) {
@@ -42,7 +51,7 @@ public class State implements Iterable<State> {
     }
 
     /**
-     * Constructor to initialize a new state based on a matrix and an operator.
+     * Constructor to initialize a new state based on a board and an operator.
      * Assumes the operator is valid.
      *
      * @param mat a 3x3 matrix representing the parent of this state.
@@ -51,22 +60,15 @@ public class State implements Iterable<State> {
     public State(int[][] mat, Operator op) {
         copyMatrix(mat, this._mat);
         this._operator = op;
-        this.move(op);
+        this.move(op); // Apply the operator
     }
 
-    /**
-     * Moves a color from its source to destination based on the provided operator.
-     *
-     * @param op the operator defining the move.
-     */
-    private void move(Operator op) {
-        this._mat[op.get_source()[0]][op.get_source()[1]] = WHITE;
-        this._mat[op.get_dest()[0]][op.get_dest()[1]] = op.get_color();
-        this._aggregateCost+=op.getCost();
-    }
+    // Public methods
 
     /**
      * Calculates the heuristic function for this state based on the goal state.
+     * The function sums the cost of moving balls that are not in their correct positions.
+     * This function is admissible and consistent.
      * @param goal The goal state to compare against.
      * @return The heuristic value.
      */
@@ -113,7 +115,7 @@ public class State implements Iterable<State> {
     }
 
     /**
-     * Prints the current state in a readable 3x3 grid format.
+     * Prints the current state in a readable 3x3 board format.
      */
     public void printState() {
         for (int i = 0; i < 3; i++) {
@@ -151,7 +153,7 @@ public class State implements Iterable<State> {
         return Arrays.deepHashCode(_mat);
     }
 
-    // getters and setters
+    // Getters and setters
     public Operator get_operator() {
         return this._operator;
     }
@@ -164,7 +166,6 @@ public class State implements Iterable<State> {
         this._parent = _parent;
     }
 
-    //for the algorithms
     public int getCreationTime() {
         return creationTime;
     }
@@ -173,10 +174,21 @@ public class State implements Iterable<State> {
         this.creationTime = creationTime;
     }
 
-
+    // Private helper methods
 
     private void addCost(int aggregateCost) {
         this._aggregateCost+=aggregateCost;
+    }
+
+    /**
+     * Moves a color from its source to destination based on the provided operator.
+     *
+     * @param op the operator defining the move.
+     */
+    private void move(Operator op) {
+        this._mat[op.get_source()[0]][op.get_source()[1]] = WHITE;
+        this._mat[op.get_dest()[0]][op.get_dest()[1]] = op.get_color();
+        this._aggregateCost+=op.getCost();
     }
 
     /**
@@ -263,7 +275,7 @@ public class State implements Iterable<State> {
                             int[] neighbor = getNeighbor(i, j, direction);
                             if (neighbor != null && _mat[neighbor[0]][neighbor[1]] == WHITE) {
                                 Operator curr = new Operator(i, j, neighbor[0], neighbor[1], _mat[i][j]);
-                                if (_operator == null || !_operator.isInverse(curr)) {
+                                if (_operator == null || !_operator.isInverse(curr)) { // The _operator == null case only occurs in the initial state.
                                     nextState = new State(_mat, curr);
                                     nextState.addCost(_aggregateCost);
                                     direction++;
@@ -274,7 +286,7 @@ public class State implements Iterable<State> {
                             direction++;
                         }
                     }
-                    advancePosition();
+                    advancePosition(); // For the next iteration
                 }
                 nextState = null;
                 foundNext = false;

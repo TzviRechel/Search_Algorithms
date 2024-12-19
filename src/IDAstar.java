@@ -1,9 +1,7 @@
-import com.sun.source.tree.WhileLoopTree;
-
 import java.util.HashSet;
 import java.util.Stack;
 
-public class IDAstar extends Searching{
+public class IDAstar extends SearchAlgorithm {
 
     public IDAstar(State start, State goal, boolean withOpen) {
         super(start, goal, withOpen);
@@ -21,18 +19,11 @@ public class IDAstar extends Searching{
             S.push(start);
             open_list.add(start);
             while(!S.isEmpty()){
-                //print open list
-                if(this.with_open){ //print the open list
-                    System.out.println("open list:");
-                    System.out.println("------------------------------------------------------------");
-                    for(State s : S){
-                        if(!s.out) {
-                            s.printState();
-                            System.out.println();
-                        }
-                    }
-                    System.out.println("------------------------------------------------------------");
+
+                if(this.with_open){ // Print open list if required
+                    printOpenList(S);
                 }
+
                 State current = S.pop();
                 if(current.out){ // out is the flag indicate that we finish with this state
                     open_list.remove(current);
@@ -94,5 +85,17 @@ public class IDAstar extends Searching{
             }
         }
         _path.append(child.get_operator().toString()).append("\n");
+    }
+
+    private void printOpenList(Stack<State> S){
+        System.out.println("open list:");
+        System.out.println("------------------------------------------------------------");
+        for(State s : S){
+            if(!s.out) {
+                s.printState();
+                System.out.println();
+            }
+        }
+        System.out.println("------------------------------------------------------------");
     }
 }

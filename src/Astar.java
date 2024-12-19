@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Astar extends Searching{
+public class Astar extends SearchAlgorithm {
 
     public Astar(State start, State goal, boolean withOpen) {
         super(start, goal, withOpen);
@@ -30,16 +30,11 @@ public class Astar extends Searching{
         Q.add(start);
         openList.add(start);
         while (!Q.isEmpty()){
-            //print open list
-            if(this.with_open){ //print the open list
-                System.out.println("open list:");
-                System.out.println("------------------------------------------------------------");
-                for(State s : Q){
-                    s.printState();
-                    System.out.println();
-                }
-                System.out.println("------------------------------------------------------------");
+
+            if(this.with_open){  // Print open list if required
+                printOpenList(Q);
             }
+
             State curr = Q.poll();
             openList.remove(curr);
             if(curr.equals(goal)){
@@ -85,5 +80,15 @@ public class Astar extends Searching{
         while(!S.isEmpty()){
             _path.append(S.pop().toString()).append(S.isEmpty() ? "\n" : "--");
         }
+    }
+
+    private void printOpenList(PriorityQueue<State> q){
+        System.out.println("open list:");
+        System.out.println("------------------------------------------------------------");
+        for(State s : q){
+            s.printState();
+            System.out.println();
+        }
+        System.out.println("------------------------------------------------------------");
     }
 }

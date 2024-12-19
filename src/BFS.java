@@ -6,7 +6,7 @@ import java.util.Stack;
 /**
  * Abstract base class for implementing state-space search algorithms.
  */
-public class BFS extends Searching{
+public class BFS extends SearchAlgorithm {
 
 
     public BFS(State start, State goal, boolean withOpen) {
@@ -29,14 +29,8 @@ public class BFS extends Searching{
         openList.add(start);
         boolean out = false; // flag if find the goal state
         while (!Q.isEmpty()){
-            if(this.with_open){ //print the open list
-                System.out.println("open list:");
-                System.out.println("------------------------------------------------------------");
-                for(State s : Q){
-                    s.printState();
-                    System.out.println();
-                }
-                System.out.println("------------------------------------------------------------");
+            if(this.with_open){ // Print open list if required
+                printOpenList(Q);
             }
             State curr = Q.poll();
             openList.remove(curr);
@@ -69,16 +63,25 @@ public class BFS extends Searching{
     }
 
     public void findPath(State myGoal){
-        //cost = 0;
+
         Stack<Operator> S = new Stack<>();
         while(myGoal.get_parent()!=null){
             S.add(myGoal.get_operator());
             myGoal = myGoal.get_parent();
         }
         while(!S.isEmpty()){
-            //cost += S.peek().getCost();
             _path.append(S.pop().toString()).append(S.isEmpty() ? "\n" : "--");
         }
+    }
+
+    private void printOpenList(Queue<State> q){
+        System.out.println("open list:");
+        System.out.println("------------------------------------------------------------");
+        for(State s : q){
+            s.printState();
+            System.out.println();
+        }
+        System.out.println("------------------------------------------------------------");
     }
 
 }

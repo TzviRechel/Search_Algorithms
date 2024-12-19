@@ -1,5 +1,11 @@
 import java.util.Arrays;
 
+
+/**
+ * This class represents an operator that enables a transition between states.
+ *
+ */
+
 public class Operator {
 
     private final int[] _source = new int[2]; //
@@ -38,6 +44,7 @@ public class Operator {
     }
 
     public String toString(){
+
         //find the color
         String color = switch (get_color()) {
             case 2 -> "G";
@@ -45,6 +52,7 @@ public class Operator {
             case 4 -> "B";
             default -> "";
         };
+        // Return this format: (1,1):R:(1,3)
         return String.format("(%d,%d):%s:(%d,%d)",
                 _source[0] + 1, _source[1] + 1, color, _dest[0] + 1, _dest[1] + 1);
     }

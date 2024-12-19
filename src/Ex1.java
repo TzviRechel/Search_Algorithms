@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Ex1 {
     public static void main(String[] args) {
+
         String filePath = "input.txt";
         Map<String, Object> params = parseInput(filePath); //map to store the parameters in the file
 
@@ -15,9 +16,9 @@ public class Ex1 {
         boolean time = (boolean)params.get("with_time");
 
         // Get the algorithm
-        Searching algo = AlgorithmFactory.getAlgorithm(name, start, goal, openList);
-        start.printState();
-        goal.printState();
+        SearchAlgorithm algo = AlgorithmFactory.getAlgorithm(name, start, goal, openList);
+//        start.printState();
+//        goal.printState();
 
         // Execute the search
        long startTime = System.currentTimeMillis();
@@ -26,7 +27,7 @@ public class Ex1 {
        double elapsedTime = (endTime - startTime) / 1000.0;
 
         //write the result to output file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(name+".txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
             writer.write(algo.getPath());
             if(algo.getPath().equals("no path\n")){
                 writer.write("Num: \n");
@@ -42,17 +43,18 @@ public class Ex1 {
             System.err.println("Error writing to file: " + e.getMessage());
         }
 
-        //print the result
-        System.out.print(algo.getPath());
-        System.out.println("num: " + algo.getNumberOfNodes());
-        System.out.println("cost: " + algo.getCost());
-        if(time) {
-            System.out.println(elapsedTime + " seconds");
-        }
+//        //print the result
+//        System.out.print(algo.getPath());
+//        System.out.println("num: " + algo.getNumberOfNodes());
+//        System.out.println("cost: " + algo.getCost());
+//        if(time) {
+//            System.out.println(elapsedTime + " seconds");
+//        }
     }
 
 
     private static Map<String, Object> parseInput(String filePath) {
+
         // Map to store the parsed parameters and states
         Map<String, Object> result = new HashMap<>();
 

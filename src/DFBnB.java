@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Stack;
 
-public class DFBnB extends Searching {
+public class DFBnB extends SearchAlgorithm {
 
     public DFBnB(State start, State goal, boolean withOpen) {
         super(start, goal, withOpen);
@@ -18,17 +18,10 @@ public class DFBnB extends Searching {
         int t = Integer.MAX_VALUE;
 
         while(!S.isEmpty()){
+
             // Print open list if required
             if(this.with_open){
-                System.out.println("open list:");
-                System.out.println("------------------------------------------------------------");
-                for(State s : S){
-                    if(!s.out) {
-                        s.printState();
-                        System.out.println();
-                    }
-                }
-                System.out.println("------------------------------------------------------------");
+                printOpenList(S);
             }
 
             State current = S.pop();
@@ -118,5 +111,17 @@ public class DFBnB extends Searching {
             }
         }
         _path.append(n.get_operator().toString()).append("\n");
+    }
+
+    private void printOpenList(Stack<State> S){
+        System.out.println("open list:");
+        System.out.println("------------------------------------------------------------");
+        for(State s : S){
+            if(!s.out) {
+                s.printState();
+                System.out.println();
+            }
+        }
+        System.out.println("------------------------------------------------------------");
     }
 }

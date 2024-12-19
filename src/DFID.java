@@ -1,7 +1,7 @@
 import java.util.HashSet;
 import java.util.Stack;
 
-public class DFID extends Searching {
+public class DFID extends SearchAlgorithm {
 
 
 
@@ -41,15 +41,9 @@ public class DFID extends Searching {
                 }
                 child.set_parent(current); // Set parent for path reconstruction
                 generate++; // Count generated nodes
-                // print open list
-                if(this.with_open){ //print the open list
-                    System.out.println("open list:");
-                    System.out.println("------------------------------------------------------------");
-                    for(State s : visited){
-                        s.printState();
-                    }
-                    System.out.println();
-                    System.out.println("------------------------------------------------------------");
+
+                if(this.with_open){ // Print open list if required
+                    printOpenList(visited);
                 }
 
                 String result = limitedDFS(child, goal, limit - 1, visited);
@@ -76,5 +70,16 @@ public class DFID extends Searching {
             Operator op = stack.pop();
             _path.append(op.toString()).append(stack.isEmpty() ? "\n" : "--");
         }
+    }
+
+    private void printOpenList(HashSet<State> visited){
+        System.out.println("open list:");
+        System.out.println("------------------------------------------------------------");
+        for(State s : visited){
+            s.printState();
+            System.out.println();
+        }
+        System.out.println("------------------------------------------------------------");
+
     }
 }
