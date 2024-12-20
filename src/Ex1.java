@@ -43,7 +43,7 @@ public class Ex1 {
             System.err.println("Error writing to file: " + e.getMessage());
         }
 
-//        //print the result
+        //print the result
 //        System.out.print(algo.getPath());
 //        System.out.println("num: " + algo.getNumberOfNodes());
 //        System.out.println("cost: " + algo.getCost());
@@ -94,4 +94,5 @@ public class Ex1 {
 
         return result;
     }
+
 }

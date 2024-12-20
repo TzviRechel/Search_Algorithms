@@ -9,6 +9,13 @@ public class IDAstar extends SearchAlgorithm {
 
     @Override
     public void search() {
+
+        // Check is the search is possible
+        if(!checkValidGame()){
+            this._path.append("no path\n");
+            return;
+        }
+
         Stack<State> S = new Stack<>();
         HashSet<State> open_list = new HashSet<>();
         int t = start.h(goal);

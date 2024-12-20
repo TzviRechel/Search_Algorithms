@@ -11,6 +11,13 @@ public class DFID extends SearchAlgorithm {
 
     @Override
     public void search() {
+
+        // Check is the search is possible
+        if(!checkValidGame()){
+            _path.append("no path\n");
+            return;
+        }
+
         for (int depth = 1; ; depth++) {
             HashSet<State> visited = new HashSet<>();
             String result = limitedDFS(start, goal, depth, visited);

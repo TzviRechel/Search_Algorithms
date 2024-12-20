@@ -154,6 +154,13 @@ public class State implements Iterable<State> {
     }
 
     // Getters and setters
+
+    public int[][] get_mat(){
+        int[][] mat = new int[3][3];
+        copyMatrix(this._mat, mat);
+        return mat;
+    }
+
     public Operator get_operator() {
         return this._operator;
     }

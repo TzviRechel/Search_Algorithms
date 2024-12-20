@@ -9,6 +9,13 @@ public class Astar extends SearchAlgorithm {
 
     @Override
     public void search() {
+
+        // Check is the search is possible
+        if(!checkValidGame()){
+            this._path.append("no path\n");
+            return;
+        }
+
         if (start.equals(goal)) {
             _path.append("start is the goal\n");
             cost = 0;
