@@ -64,8 +64,8 @@ Cost: 13
 0.002 seconds
 ```
 
-
-- **Num**: Total number of nodes expanded during the search- **First line**: Solution path as a sequence of moves(`R` and `G` represent the color).
+- **First line**: Solution path as a sequence of moves(`R` and `G` represent the color).
+- **Num**: Total number of nodes expanded during the search
 - **Cost**: Total cost of the solution.
 - **Time**: Total runtime (only if "with time" is specified).
 
