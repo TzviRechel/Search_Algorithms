@@ -14,7 +14,6 @@ public class DFBnB extends SearchAlgorithm {
 
         // Check is the search is possible
         if(!checkValidGame()){
-            this._path.append("no path\n");
             return;
         }
 

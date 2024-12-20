@@ -29,11 +29,10 @@ public class Ex1 {
         //write the result to output file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
             writer.write(algo.getPath());
+            writer.write("Num: " + algo.getNumberOfNodes() + "\n");
             if(algo.getPath().equals("no path\n")){
-                writer.write("Num: \n");
                 writer.write("Cost: inf\n");
             }else {
-                writer.write("Num: " + algo.getNumberOfNodes() + "\n");
                 writer.write("Cost: " + algo.getCost() + "\n");
             }
             if (time) {
