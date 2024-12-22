@@ -17,8 +17,6 @@ public class Ex1 {
 
         // Get the algorithm
         SearchAlgorithm algo = AlgorithmFactory.getAlgorithm(name, start, goal, openList);
-//        start.printState();
-//        goal.printState();
 
         // Execute the search
        long startTime = System.currentTimeMillis();
@@ -41,14 +39,6 @@ public class Ex1 {
         } catch (IOException e) {
             System.err.println("Error writing to file: " + e.getMessage());
         }
-
-        //print the result
-//        System.out.print(algo.getPath());
-//        System.out.println("num: " + algo.getNumberOfNodes());
-//        System.out.println("cost: " + algo.getCost());
-//        if(time) {
-//            System.out.println(elapsedTime + " seconds");
-//        }
     }
 
 

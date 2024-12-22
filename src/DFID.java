@@ -4,7 +4,6 @@ import java.util.Stack;
 public class DFID extends SearchAlgorithm {
 
 
-
     public DFID(State start, State goal, boolean withOpen) {
         super(start, goal, withOpen);
     }
