@@ -17,6 +17,12 @@ public class DFID extends SearchAlgorithm {
             return;
         }
 
+        // Check if the start state is the goal
+        if (start.equals(goal)) {
+            this._path.append("\n");
+            return;
+        }
+
         for (int depth = 1; ; depth++) {
             HashSet<State> visited = new HashSet<>();
             String result = limitedDFS(start, goal, depth, visited);

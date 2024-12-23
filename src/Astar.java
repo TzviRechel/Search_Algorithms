@@ -16,11 +16,12 @@ public class Astar extends SearchAlgorithm {
             return;
         }
 
+        // Check if the start state is the goal
         if (start.equals(goal)) {
-            _path.append("start is the goal\n");
-            cost = 0;
+            this._path.append("\n");
             return;
         }
+
         HashSet<State> openList = new HashSet<>();
         HashSet<State> closedList = new HashSet<>();
         PriorityQueue<State> Q = new PriorityQueue<State>(new Comparator<State>(){

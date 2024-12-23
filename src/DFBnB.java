@@ -17,6 +17,13 @@ public class DFBnB extends SearchAlgorithm {
             return;
         }
 
+        // Check if the start state is the goal
+        if (start.equals(goal)) {
+            _path.setLength(0); // clear
+            this._path.append("\n");
+            return;
+        }
+
         Stack<State> S = new Stack<>();
         HashSet<State> open_list = new HashSet<>();
         S.push(start);

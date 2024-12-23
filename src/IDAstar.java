@@ -16,6 +16,12 @@ public class IDAstar extends SearchAlgorithm {
             return;
         }
 
+        // Check if the start state is the goal
+        if (start.equals(goal)) {
+            this._path.append("\n");
+            return;
+        }
+
         Stack<State> S = new Stack<>();
         HashSet<State> open_list = new HashSet<>();
         int t = start.h(goal);
